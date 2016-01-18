@@ -1,0 +1,6 @@
+concourse_url: https://github.com/vito/concourse-bin/releases/download/dev/concourse_linux_amd64
+app_name: concourse
+firewall_allowed_tcp_ports:
+  - "22"
+  - "25"
+  - "80"

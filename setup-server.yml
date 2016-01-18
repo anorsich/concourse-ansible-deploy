@@ -1,0 +1,77 @@
+---
+- name: Setup a server
+  hosts: app
+  vars_files:
+    - "vars/main.yml"
+    - "vars/credential.yml"
+  roles:
+      - common
+      - nginx
+      - angstwad.docker_ubuntu
+  tasks:
+    - name: download concourse binary
+      get_url: url={{ concourse_url }} dest=/usr/bin/concourse
+
+    - name: make concourse executable
+      file: path=/usr/bin/concourse owner=root mode=0555
+
+    - name: Create directories
+      file: path={{item}} state=directory
+      with_items:
+        - "/opt/concourse/worker"
+        - "/opt/concourse/keys"
+
+    - name: Copy ssl concourse keys
+      copy: src={{ inventory_dir }}/files/{{item}} dest=/opt/concourse/keys/{{item}} owner=root mode=744
+      with_items:
+        - "authorized_worker_keys"
+        - "session_signing_key"
+        - "session_signing_key.pub"
+        - "host_key.pub"
+        - "host_key"
+        - "worker_key.pub"
+        - "worker_key"
+
+    - name: copy nginx virtual host file
+      sudo: yes
+      template: src="{{ inventory_dir }}/templates/concourse-nginx-config.j2"
+                dest="/etc/nginx/sites-available/{{app_name}}"
+                owner=root
+                group=root
+      tags:
+        - nginx
+
+    - name: link nginx virtual host file
+      sudo: yes
+      file: src="/etc/nginx/sites-available/{{app_name}}"
+            dest="/etc/nginx/sites-enabled/{{app_name}}"
+            state=link
+      tags:
+        - nginx
+
+    - name: restart nginx
+      sudo: yes
+      service: name=nginx state=restarted
+      tags:
+        - nginx
+
+    - name: Assures /postgresql/data exists
+      file: path=/postgresql/data state=directory
+
+    - name: run postgresql using docker
+      docker:
+        name: postgres
+        image: postgres:9.5
+        state: started
+        restart_policy: always
+        docker_api_version: 1.18
+        volumes:
+          - /postgresql/data:/var/lib/postgresql/data
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_PASSWORD: "{{postgresql_password}}"
+          POSTGRES_USER: "{{postgresql_user}}"
+          POSTGRES_DB: "{{postgresql_db}}"
+      tags:
+        - postgresql
