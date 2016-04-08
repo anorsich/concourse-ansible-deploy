@@ -13,6 +13,6 @@ respawn
 exec /usr/bin/concourse worker \
   --work-dir /opt/concourse/worker \
   --peer-ip {{server_ip}} \
-  --tsa-host {{nginx_server_name}} \
+  --tsa-host {{server_ip}} \
   --tsa-public-key /opt/concourse/keys/host_key.pub \
   --tsa-worker-private-key /opt/concourse/keys/worker_key
