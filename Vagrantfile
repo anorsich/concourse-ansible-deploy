@@ -19,19 +19,19 @@ Vagrant.configure(2) do |config|
     aws.elastic_ip = ENV['CC_AWS_EIP'] || true
     aws.security_groups = [ ENV['CC_AWS_SEC_GRP'] ]
     aws.region = ENV['CC_AWS_REGION'] || 'eu-west-1'
-    aws.user_data = "#cloud-config\ndisable_root: false"
     aws.tags = {
       'Name' => "concourse"
     }
 
     override.vm.box = "dummy"
     override.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
-    override.ssh.username = "root"
+    override.ssh.username = "ubuntu"
     override.ssh.private_key_path = ENV['CC_PRIVATE_KEY_PATH']
   end
 
   ['setup-server', 'deploy-concourse', 'deploy-worker'].each do |playbook|
     config.vm.provision :ansible do |ansible|
+      ansible.sudo = true
       ansible.groups = {
           "app" => ["default"]
       }
