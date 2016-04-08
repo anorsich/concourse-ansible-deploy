@@ -1,16 +1,12 @@
 # {{ansible_managed}}
 
-description "concourse-ui"
+[Unit]
+Description=concourse-ui
+Documentation=http://concourse.ci
 
-# Start just after the System-V jobs (rc) to ensure networking
-# are started. This is as simple as possible to ensure compatibility with
-# Ubuntu, Debian, CentOS, and RHEL distros. See:
-# http://upstart.ubuntu.com/cookbook/#standard-idioms
-start on stopped rc RUNLEVEL=[2345]
-
-respawn
-
-exec /usr/bin/concourse web \
+[Service]
+Restart=on-failure
+ExecStart=/usr/bin/concourse web \
   --basic-auth-username {{basic_auth_user}} \
   --basic-auth-password {{basic_auth_password}} \
   --session-signing-key /opt/concourse/keys/session_signing_key \
@@ -18,3 +14,6 @@ exec /usr/bin/concourse web \
   --tsa-authorized-keys /opt/concourse/keys/authorized_worker_keys \
   --postgres-data-source postgres://{{postgresql_user}}:{{postgresql_password}}@{{server_ip}}/{{postgresql_db}}?sslmode=disable \
   --external-url http://{{nginx_server_name}}
+
+[Install]
+WantedBy=multi-user.target

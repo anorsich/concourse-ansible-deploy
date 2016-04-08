@@ -9,7 +9,7 @@
       service: name=concourse-ui state=restarted
 
   tasks:
-    - name: Copy upstart config for concourse web
-      template: src=templates/init-concourse-ui.j2 dest=/etc/init/concourse-ui.conf
+    - name: Copy systemd config for concourse web
+      template: src=templates/init-concourse-ui.j2 dest=/lib/systemd/system/concourse-ui.service
       notify:
         - restart concourse-ui
