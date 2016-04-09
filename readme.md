@@ -1,4 +1,4 @@
-## Concourse on Ubuntu 1504 with Vagrant
+## Concourse on Ubuntu 1504 with Vagrant + Ansible
 
 Installs [Concourse CI](http://concourse.ci/) from [binaries](https://github.com/vito/concourse-bin), Nginx, Postgresql using docker
 and configures systemd jobs. Ubuntu 1504 is recommended as the minimum kernel version required for Concourse is currently 3.19.
@@ -27,7 +27,7 @@ Concourse should be available on http://192.168.66.66
 
 In AWS, create/note the keypair to be used on the machine, and if you haven't already created a security group with inbound port 80 allow from wherever you need, do that too and note the `sg-xxxxxx` id for later. If you're deploying into a VPC, note down the subnet id to be deployed into.
 
-Using an elastic IP is recommended. If you do, create a Route53 record for Concourse to use with that elastic IP. Update the `nginx_server_name` value in `vars/credentials.yml` with this DNS address before you deploy.
+Using an elastic IP is recommended (allocate one in AWS and note its address). Create a Route53 record for Concourse to use with that elastic IP. Update the `nginx_server_name` value in `vars/credentials.yml` with this DNS address before you deploy.
 
 Ensure the required environment variables listed below are set (and override any optional ones) :
 
@@ -39,7 +39,7 @@ Ensure the required environment variables listed below are set (and override any
 | CC_AWS_AMI | ami-3a229449 (Ubuntu 1504 in eu-west-1) |
 | CC_AWS_INSTANCE_TYPE | t2.small |
 | CC_AWS_SUBNET_ID | None (set if you're using in a VPC) |
-| CC_AWS_EIP | None |
+| CC_AWS_EIP | None (required) |
 | CC_AWS_SEC_GRP | None (required) |
 | CC_AWS_REGION | eu-west-1 |
 | CC_PRIVATE_KEY_PATH | None (required) |
