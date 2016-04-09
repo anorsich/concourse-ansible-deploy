@@ -7,6 +7,8 @@ Vagrant.configure(2) do |config|
     v.name = 'concourse'
 
     override.vm.box = 'box-cutter/ubuntu1504'
+    override.vm.network "private_network", ip: "192.168.66.66"
+
   end
 
   config.vm.provider :aws do |aws, override|
