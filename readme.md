@@ -1,9 +1,7 @@
-## Concourse on Ubuntu 1504 with Vagrant + Ansible
+## Concourse on Ubuntu 1404 with Vagrant + Ansible
 
 Installs [Concourse CI](http://concourse.ci/) from [binaries](https://github.com/vito/concourse-bin), Nginx, Postgresql using docker
-and configures systemd jobs. Ubuntu 1504 is recommended as the minimum kernel version required for Concourse is currently 3.19.
-
-You can use Ubuntu 1404 if you wish but you will additionally need to install vivid kernel packages.
+and configures upstart jobs. Ubuntu 1404 uses Vivid's kernel to reach the minimum 3.19 version required by Concourse.
 
 ### Prerequisites
 
@@ -36,7 +34,7 @@ Ensure the required environment variables listed below are set (and override any
 | CC_AWS_ACCESS_KEY_ID  | None (required) |
 | CC_AWS_SECRET_ACCESS_KEY  | None (required) |
 | CC_AWS_KEYPAIR |  concourse |
-| CC_AWS_AMI | ami-3a229449 (Ubuntu 1504 in eu-west-1) |
+| CC_AWS_AMI | ami-6177f712 (Ubuntu 1404 in eu-west-1) |
 | CC_AWS_INSTANCE_TYPE | t2.small |
 | CC_AWS_SUBNET_ID | None (set if you're using in a VPC) |
 | CC_AWS_EIP | None (required) |
