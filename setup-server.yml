@@ -9,6 +9,9 @@
       - nginx
       - angstwad.docker_ubuntu
   tasks:
+    - name: disable apparmor until end of installer
+      service: name=apparmor state=stopped
+
     - name: download concourse binary
       get_url: url={{ concourse_url }} dest=/usr/bin/concourse
 
@@ -75,3 +78,6 @@
           POSTGRES_DB: "{{postgresql_db}}"
       tags:
         - postgresql
+
+    - name: restart apparmor
+      service: name=apparmor state=started
