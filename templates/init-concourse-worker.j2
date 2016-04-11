@@ -1,17 +1,18 @@
 # {{ansible_managed}}
 
-[Unit]
-Description=concourse-worker
-Documentation=http://concourse.ci
+description "concourse-worker"
 
-[Service]
-Restart=on-failure
-ExecStart=/usr/bin/concourse worker \
+# Start just after the System-V jobs (rc) to ensure networking
+# are started. This is as simple as possible to ensure compatibility with
+# Ubuntu, Debian, CentOS, and RHEL distros. See:
+# http://upstart.ubuntu.com/cookbook/#standard-idioms
+start on stopped rc RUNLEVEL=[2345]
+
+respawn
+
+exec /usr/bin/concourse worker \
   --work-dir /opt/concourse/worker \
   --peer-ip {{server_ip}} \
   --tsa-host {{server_ip}} \
   --tsa-public-key /opt/concourse/keys/host_key.pub \
   --tsa-worker-private-key /opt/concourse/keys/worker_key
-
-[Install]
-WantedBy=multi-user.target

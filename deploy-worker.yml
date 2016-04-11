@@ -8,7 +8,7 @@
     - name: restart concourse-worker
       service: name=concourse-worker state=restarted
   tasks:
-    - name: Copy systemd config for concourse worker
-      template: src=templates/init-concourse-worker.j2 dest=/lib/systemd/system/concourse-worker.service
+    - name: Copy upstart config for concourse worker
+      template: src=templates/init-concourse-worker.j2 dest=/etc/init/concourse-worker.conf
       notify:
         - restart concourse-worker

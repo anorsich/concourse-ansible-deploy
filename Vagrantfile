@@ -6,16 +6,15 @@ Vagrant.configure(2) do |config|
     v.cpus = 2
     v.name = 'concourse'
 
-    override.vm.box = 'box-cutter/ubuntu1504'
+    override.vm.box = 'ubuntu/trusty64'
     override.vm.network "private_network", ip: "192.168.66.66"
-
   end
 
   config.vm.provider :aws do |aws, override|
     aws.access_key_id = ENV['CC_AWS_ACCESS_KEY_ID']
     aws.secret_access_key = ENV['CC_AWS_SECRET_ACCESS_KEY']
     aws.keypair_name = ENV['CC_AWS_KEYPAIR'] || "concourse"
-    aws.ami = ENV['CC_AWS_AMI'] || "ami-3a229449"
+    aws.ami = ENV['CC_AWS_AMI'] || "ami-6177f712"
     aws.instance_type = ENV['CC_AWS_INSTANCE_TYPE'] || "t2.small"
     aws.subnet_id = ENV['CC_AWS_SUBNET_ID'] || nil
     aws.elastic_ip = ENV['CC_AWS_EIP'] || true
