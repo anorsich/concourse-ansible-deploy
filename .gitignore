@@ -1,3 +1,5 @@
+.vagrant
+*.retry
 vars/credential.yml
 files
 hosts
