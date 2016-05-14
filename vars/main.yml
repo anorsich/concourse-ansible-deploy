@@ -1,4 +1,4 @@
-concourse_url: https://github.com/concourse/bin/releases/download/v1.0.1-rc.9/concourse_linux_amd64
+concourse_url: https://github.com/concourse/concourse/releases/download/v1.2.0/concourse_linux_amd64
 app_name: concourse
 firewall_allowed_tcp_ports:
   - "22"
