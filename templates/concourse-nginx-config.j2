@@ -5,6 +5,8 @@ server {
   location / {
      client_max_body_size 20m;
      client_body_timeout  300s;
+     proxy_set_header Upgrade $http_upgrade;
+     proxy_set_header Connection "upgrade";
      proxy_set_header Host $host;
      proxy_pass http://localhost:8080;
   }
